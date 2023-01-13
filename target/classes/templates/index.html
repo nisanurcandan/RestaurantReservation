@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Table Reservation</title>
+	<link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+
+<body>
+<h1 class="header" style="font-size: 38px;">Table Reservation</h1>
+<div>
+<th:block th:each='table : ${allTables}'>
+	<div class="column">
+		<h2 class="headertable" th:text="|Table ${tableStat.index+1}|"></h2>
+		<img class="center" src="/table.png">
+		<th:block th:if="${table.isAvailableAtThisTime(currentTime.getCurrentHour())}">
+
+			<div id="wrapps">
+				<form th:action="@{'/'}" th:method="post" >
+					<input type="hidden" th:value="${table.getTableID()}" name="value" />
+					<button class="btn-1" type="submit">
+						Click for Reserve
+					</button>
+				</form>
+			</div>
+
+
+		</th:block>
+		<th:block th:unless="${table.isAvailableAtThisTime(currentTime.getCurrentHour())}">
+			<button class="btn-3" type="submit">
+				Already Reserved
+			</button>
+		</th:block>
+	</div>
+
+</th:block>
+</div>
+
+<div class="footer">
+		<form th:action="@{'/'}" th:method="post" style="float:left; padding-left: 43%; padding-top: 15px; text-align: center;">
+			<input type="hidden" th:value="decreaseHour" name="value" />
+				<button class="btn-2" type="submit">
+					<
+				</button>
+		</form>
+
+		<h3 class="clock" style="float: left; padding-left: 2%; padding-right: 2%;" th:text="${currentTime.getCurrentHourAsNicelyFormatted()}"> </h3>	
+		
+		<form th:action="@{'/'}" th:method="post" style="float:left; padding-top: 15px; text-align: center;">
+			<input type="hidden" th:value="increaseHour" name="value" />
+				<button class="btn-2" type="submit">
+					>
+				</button>
+		</form>
+
+		<form th:action="@{'/'}" th:method="post" style="float:left; position: absolute; bottom: 0; padding: 0.5%; text-align: center;">
+			<input type="hidden" th:value="reset" name="value" />
+			<button class="reset-btn" type="submit">
+				RESET
+			</button>
+		</form>
+</div>
+</body>
+</html>
